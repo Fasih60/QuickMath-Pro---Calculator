@@ -397,7 +397,7 @@ conversionType.addEventListener('change', (e) => {
                 <option value="mi">Miles</option>
             </select>
             <button onclick="convertLength()">Convert</button>
-        `;
+            <button onclick="clearConverterForm()">Clear</button> `;
     } else if (type === 'weight') {
         html = `
             <input type="number" id="weight-value" placeholder="Value" autofocus>
@@ -419,7 +419,7 @@ conversionType.addEventListener('change', (e) => {
                 <option value="ton">Tons</option>
             </select>
             <button onclick="convertWeight()">Convert</button>
-        `;
+            <button onclick="clearConverterForm()">Clear</button> `;
     } else if (type === 'temperature') {
         html = `
             <input type="number" id="temp-value" placeholder="Value" autofocus>
@@ -435,7 +435,7 @@ conversionType.addEventListener('change', (e) => {
                 <option value="k">Kelvin</option>
             </select>
             <button onclick="convertTemperature()">Convert</button>
-        `;
+            <button onclick="clearConverterForm()">Clear</button> `;
     }
     conversionInputs.innerHTML = html;
     
@@ -447,6 +447,12 @@ conversionType.addEventListener('change', (e) => {
         }
     }, 10);
 });
+
+function clearConverterForm() {
+    conversionInputs.querySelectorAll('input').forEach(input => input.value = '');
+    conversionInputs.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+    conversionResult.innerText = '';
+}
 
 function convertLength() {
     const inputField = document.getElementById('length-value');
@@ -542,7 +548,22 @@ function convertTemperature() {
 
 // Enhanced Keyboard Support
 document.addEventListener("keydown", (e) => {
-    // Prevent default for keys we handle
+    const tag = e.target.tagName.toLowerCase();
+
+    // Allow input/select fields to work normally
+    if (tag === "input" || tag === "select" || e.target.isContentEditable) {
+        // Handle Enter key in converter mode
+        if (currentMode === 'converter' && e.key === "Enter") {
+            e.preventDefault();
+            const type = conversionType.value;
+            if (type === 'length') convertLength();
+            else if (type === 'weight') convertWeight();
+            else if (type === 'temperature') convertTemperature();
+        }
+        return; // Let normal input behavior work
+    }
+
+    // Calculator shortcuts
     if ((e.key >= "0" && e.key <= "9") || 
         e.key === "." || 
         e.key === "+" || 
@@ -576,34 +597,6 @@ document.addEventListener("keydown", (e) => {
     else if (e.key === "c" && e.altKey) clearMemory();
     else if (e.key === "p" && e.altKey) insertPi();
     else if (e.key === "e" && e.altKey) insertE();
-});
-
-document.addEventListener('keydown', function(e) {
-    // Only handle if we're in converter mode
-    if (currentMode !== 'converter') return;
-    
-    const activeElement = document.activeElement;
-    const isConverterInput = activeElement && activeElement.id && 
-                           (activeElement.id.includes('value') || 
-                            activeElement.id.includes('from') || 
-                            activeElement.id.includes('to'));
-    
-    if (isConverterInput) {
-        // Allow navigation with arrow keys in selects
-        if (activeElement.tagName === 'SELECT' && 
-            (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
-            return; // Let the select handle these keys
-        }
-        
-        // Handle Enter key to trigger conversion
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const type = conversionType.value;
-            if (type === 'length') convertLength();
-            else if (type === 'weight') convertWeight();
-            else if (type === 'temperature') convertTemperature();
-        }
-    }
 });
 // Initialize
 updateDisplay();
