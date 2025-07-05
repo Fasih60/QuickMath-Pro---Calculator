@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickMath Pro</title>
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="icon" type="image/x-icon" href="./logos/logo.jpg">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">🧮</span>
+            <span>QuickMath Pro</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Mode Selector -->
+        <div class="mode-toggle">
+            <button id="standard-mode" class="mode-btn active">Standard</button>
+            <button id="scientific-mode" class="mode-btn">Scientific</button>
+            <button id="financial-mode" class="mode-btn">Financial</button>
+            <button id="converter-mode" class="mode-btn">Unit Converter</button>
+        </div>
+
+        <div class="calculator">
+            <div class="display">
+                <div class="previous-operand" id="previous-operand"></div>
+                <div class="current-operand" id="current-operand">0</div>
+            </div>
+
+            <!-- STANDARD MODE -->
+            <div class="buttons-grid" id="standard-buttons">
+                <button class="span-3" onclick="clearAll()">AC</button>
+                <button class = "operator" onclick="deleteLastChar()">DEL</button>
+                <button class="operator" onclick="calculateModulus()">mod</button>
+
+                <button onclick="appendNumber('7')">7</button>
+                <button onclick="appendNumber('8')">8</button>
+                <button onclick="appendNumber('9')">9</button>
+                <button class="operator" onclick="appendOperator('/')">÷</button>
+                <button class="operator" onclick="appendOperator('*')">×</button>
+                
+                <button onclick="appendNumber('4')">4</button>
+                <button onclick="appendNumber('5')">5</button>
+                <button onclick="appendNumber('6')">6</button>
+                <button class="operator" onclick="appendOperator('+')">+</button>
+                <button class="operator" onclick="appendOperator('-')">-</button>
+                
+                <button onclick="appendNumber('1')">1</button>
+                <button onclick="appendNumber('2')">2</button>
+                <button onclick="appendNumber('3')">3</button>
+                <button class = "operator" onclick="appendNumber('.')">.</button>
+                <button class="operator" onclick="calculatePercentage()">%</button>
+
+                <button class="span-3" onclick="appendNumber('0')">0</button>
+                <button class="operator span-2" onclick="calculate()">=</button>
+            </div>
+
+            <!-- SCIENTIFIC MODE -->
+            <div class="buttons-grid scientific-buttons" id="scientific-buttons">
+
+                <button class="operator span-2" onclick="clearAll()">AC</button>
+                <button class = "operator" onclick="calculatePermutation()">nPr</button>
+                <button class = "operator" onclick="calculateCombination()">nCr</button>
+                <button class = "operator" onclick="clearMemory()">MC</button>
+
+                <button class="span-2" onclick="deleteLastChar()">DEL</button>
+                <button onclick="memoryRecall()">MR</button>
+                <button onclick="memoryAdd()">M+</button>
+                <button onclick="memorySubtract()">M-</button>
+
+                <button class = "operator" onclick="insertE()">e</button>
+                <button class = "operator" onclick="insertPi()">π</button>
+                <button class = "operator" onclick="calculatePower()">x^y</button>
+                <button class = "operator" onclick="calculateSquareRoot()">√</button>
+                <button class = "operator" onclick="calculateCubeRoot()">∛</button>
+
+                
+                <button onclick="appendNumber('7')">7</button>
+                <button onclick="appendNumber('8')">8</button>
+                <button onclick="appendNumber('9')">9</button>
+                <button class = "operator" onclick="calculateLog()">log</button>
+                <button class = "operator"  onclick="calculateLn()">ln</button>
+                
+                <button onclick="appendNumber('4')">4</button>
+                <button onclick="appendNumber('5')">5</button>
+                <button onclick="appendNumber('6')">6</button>
+                <button class = "operator" onclick="calculateSin()">sin</button>
+                <button class = "operator" onclick="calculateCos()">cos</button>
+
+                <button onclick="appendNumber('1')">1</button>
+                <button onclick="appendNumber('2')">2</button>
+                <button onclick="appendNumber('3')">3</button>
+                <button class = "operator" onclick="calculateTan()">tan</button>
+                <button class = "operator" onclick="calculateFactorial()">x!</button>
+
+                <button class = "span-2" onclick="appendNumber('0')">0</button>
+                <button class = "operator" onclick="appendNumber('.')">.</button>
+                <button class="span-2 operator" onclick="calculate()">=</button>
+            </div>
+
+            <!-- FINANCIAL MODE -->
+            <div class="financial-buttons" id="financial-buttons">
+                <div class="financial-tabs">
+                    <button type="button" onclick="showSimpleInterestForm()">Simple Interest</button>
+                    <button type="button" onclick="showCompoundInterestForm()">Compound Interest</button>
+                    <button type="button" onclick="showEMIForm()">EMI</button>
+                </div>
+
+                <!-- Simple Interest Form -->
+                <div class="financial-form" id="simple-interest-form">
+                    <h3>Simple Interest</h3>
+                    <input type="number" id="principal" placeholder="Principal">
+                    <input type="number" id="rate" placeholder="Rate (%)">
+                    <input type="number" id="time" placeholder="Time (years)">
+                    <div class="financial-buttons-row">
+                        <button class = "operator" type="button" onclick="calculateSimpleInterest()">Calculate</button>
+                        <button class = "operator" type="button" onclick="clearFinancialForm('simple-interest-form')">Clear</button>
+                    </div>
+                    <div id="si-result"></div>
+                </div>
+
+                <!-- Compound Interest Form -->
+                <div class="financial-form" id="compound-interest-form">
+                    <h3>Compound Interest</h3>
+                    <input type="number" id="ci-principal" placeholder="Principal">
+                    <input type="number" id="ci-rate" placeholder="Rate (%)">
+                    <input type="number" id="ci-time" placeholder="Time (years)">
+                    <input type="number" id="ci-compounds" placeholder="Compounds/year" value="1">
+                    <div class="financial-buttons-row">
+                        <button class = "operator" type="button" onclick="calculateCompoundInterest()">Calculate</button>
+                        <button class = "operator" type="button" onclick="clearFinancialForm('compound-interest-form')">Clear</button>
+                    </div>
+                    <div id="ci-result"></div>
+                </div>
+
+                <!-- EMI Form -->
+                <div class="financial-form" id="emi-form">
+                    <h3>Loan EMI</h3>
+                    <input type="number" id="loan-amount" placeholder="Loan Amount">
+                    <input type="number" id="interest-rate" placeholder="Interest Rate (%)">
+                    <input type="number" id="loan-tenure" placeholder="Tenure (months)">
+                    <div class="financial-buttons-row">
+                        <button class = "operator" type="button" onclick="calculateEMI()">Calculate</button>
+                        <button class = "operator" type="button" onclick="clearFinancialForm('emi-form')">Clear</button>
+                    </div>
+                    <div id="emi-result"></div>
+                </div>
+            </div>
+
+            <!-- UNIT CONVERTER MODE -->
+            <div class="converter-container" id="converter-container">
+                <select id="conversion-type">
+                    <option value="">-- Select Conversion Type --</option>
+                    <option value="length">Length</option>
+                    <option value="weight">Weight</option>
+                    <option value="temperature">Temperature</option>
+                </select>
+                
+                <div class="converter-inputs" id="converter-inputs">
+                    <!-- Dynamically filled based on selection -->
+                </div>
+                
+                <div class="converter-result" id="converter-result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>
